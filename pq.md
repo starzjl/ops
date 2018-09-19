@@ -44,7 +44,7 @@ vim /var/lib/pgsql/9.6/data/postgresql.conf
 ##配置文件中，默认只能本机访问postgresql；
 ##修改listen_addresses = 'localhost'为listen_addresses = '*'，允许所有远程访问；
 
-https://github.com/starzjl/ops/blob/master/images/01.png
+![image](https://github.com/starzjl/ops/blob/master/images/01.png)
 
-https://github.com/starzjl/ops/blob/master/images/02.png
+![image](https://github.com/starzjl/ops/blob/master/images/02.png)
 
