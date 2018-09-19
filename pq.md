@@ -28,7 +28,6 @@ postgres安装完成后，会自动在操作系统和postgres数据库中分别�
 说明：参数含义: -U指定用户 -d要连接的数据库 -h要连接的主机 -W提示输入密码。
 
 
-
 yum 安装 postgresql ，默认会创建一个名为 postgres 的系统账号，用于执行 postgresql;
 
 -bash-4.2$ psql -U postgres
@@ -44,4 +43,8 @@ vim /var/lib/pgsql/9.6/data/postgresql.conf
 
 ##配置文件中，默认只能本机访问postgresql；
 ##修改listen_addresses = 'localhost'为listen_addresses = '*'，允许所有远程访问；
+
+https://github.com/starzjl/ops/blob/master/images/01.png
+
+https://github.com/starzjl/ops/blob/master/images/02.png
 
