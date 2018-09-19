@@ -46,5 +46,22 @@ vim /var/lib/pgsql/9.6/data/postgresql.conf
 
 ![image](https://github.com/starzjl/ops/blob/master/images/01.png)
 
+vim /var/lib/pgsql/9.6/data/pg_hba.conf
+
+第一个"all"代表 db，第二个"all"代表user，0.0.0.0/0代表client ip , 后面 trust , peer , ident , md5 , password  是认证方式
+
 ![image](https://github.com/starzjl/ops/blob/master/images/02.png)
 
+查询最大连接数：
+
+show max_connections;
+
+查询当前连接数：
+
+select count(1) from pg_stat_activity;
+
+create role repl login replication encrypted password '51idc.com';
+
+
+
+wal_level = hot_standby
