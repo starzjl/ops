@@ -21,6 +21,26 @@ docker login -u admin -p startdt reg.startdt.com
 docker push reg.startdt.com/middleware/owl-app:v1
 
 #############################################################################################################################
+cd $WORKSPACE
+docker login -u admin -p startdt reg.startdt.com
+cat > Dockerfile <<EOF
+FROM  reg.startdt.com/middleware/owl-app:v1
+VOLUME /tmp
+ADD server/server/target/config-center-server-0.0.1-SNAPSHOT.jar app.jar
+RUN bash -c 'touch /app.jar'
+EXPOSE 8090
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+EOF
+
+docker build -t reg.startdt.com/middleware/config-center-server-app:v0.0.1 .
+docker login -u admin -p startdt reg.startdt.com
+docker push reg.startdt.com/middleware/config-center-server-app:v0.0.1
+#############################################################################################################################
+docker rm -f config-center-server | true
+docker rmi -f reg.startdt.com/middleware/config-center-server-app:v0.0.1 | true
+docker login -u admin -p startdt reg.startdt.com
+docker run --name config-center-server -itd -p 8080:8080 reg.startdt.com/middleware/config-center-server-app:v0.0.1
+#############################################################################################################################
 
 ssh:
 
@@ -30,4 +50,15 @@ docker login -u admin -p startdt reg.startdt.com
 docker run --name owl -itd -p 8080:8080 -v /etc/localtime:/etc/localtime reg.startdt.com/middleware/owl-app:v1
 
 #############################################################################################################################
+
+
+2. jenkins 发布前端：
+
+yarn install
+npm run build
+scp -r dist/* root@172.16.3.3:/home/www/startdt-admin/webroot/
+
+3. jenkins 发布后端 
+
+
 
