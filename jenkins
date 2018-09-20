@@ -60,5 +60,27 @@ scp -r dist/* root@172.16.3.3:/home/www/startdt-admin/webroot/
 
 3. jenkins 发布后端 
 
+#############################################################################################################################
+
+export JAVA_HOME=/usr/local/java
+export JRE_HOME=$JAVA_HOME
+export PATH=$JAVA_HOME/bin:$PATH
+
+war_path=/home/admin/source/counter-local.war
+tomcat_home=/home/admin/localserver/tomcat
+webapp_dir=/home/admin/localserver/webapps
+
+rm -rf $webapp_dir/*
+mv $war_path $webapp_dir/counter-local.war
+cd $webapp_dir
+unzip counter-local.war
+rm -rf counter-local.war
+
+ps -ef |grep localserver|grep -v grep |awk '{print $2}' | xargs kill -9
+
+sh $tomcat_home/bin/catalina.sh start
+
+############################################################################################################################
+
 
 
