@@ -1,0 +1,33 @@
+1. jenkins 结合 docker 发布
+
+Post Steps 执行 shell 
+
+#############################################################################################################################
+
+cd $WORKSPACE
+docker login -u admin -p startdt reg.startdt.com
+cat > Dockerfile <<EOF
+FROM  reg.startdt.com/middleware/owl-app:v1
+VOLUME /tmp
+ADD target/monitor-0.0.1-SNAPSHOT.jar app.jar
+RUN ["/bin/bash", "-c", "echo Asia/Shanghai > /etc/timezone"]
+RUN bash -c 'touch /app.jar'
+EXPOSE 8081
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+EOF
+
+docker build -t reg.startdt.com/middleware/owl-app:v1 .
+docker login -u admin -p startdt reg.startdt.com
+docker push reg.startdt.com/middleware/owl-app:v1
+
+#############################################################################################################################
+
+ssh:
+
+docker rm -f owl | true
+docker rmi -f reg.startdt.com/middleware/owl-app:v1 | true
+docker login -u admin -p startdt reg.startdt.com
+docker run --name owl -itd -p 8080:8080 -v /etc/localtime:/etc/localtime reg.startdt.com/middleware/owl-app:v1
+
+#############################################################################################################################
+
